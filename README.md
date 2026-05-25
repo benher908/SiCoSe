@@ -3,16 +3,16 @@
 Sistema web para la gestión y digitalización de pagos de servicios públicos
 en Juntas Auxiliares gubernamentales.
 
-## 🏛️ Contexto
+## Contexto
 Diseñado para el personal administrativo y tesorería de Juntas Auxiliares que
 operan con procesos semi-manuales de recaudación (agua, cooperaciones, etc).
 
-## 🎯 Problemáticas que resuelve
+## Problemáticas que resuelve
 - **Caos en conciliación de pagos** por transferencia vía WhatsApp o físicos
 - **Falta de trazabilidad** de adeudos históricos por ciudadano
 - **Ausencia de métricas** para toma de decisiones en planeación presupuestal
 
-## 👥 Equipo — SiCoSe
+## Equipo — SiCoSe
 | Nombre | Rol |
 |--------|-----|
 | David Aguilar Rodríguez | Product Owner / Business Lead |
@@ -20,7 +20,7 @@ operan con procesos semi-manuales de recaudación (agua, cooperaciones, etc).
 | Cesar Gaspar Pacheco | Product Engineer / Full Stack Builder |
 | Benkis Carbajal Hernández | QA / Delivery / Operations Engineer |
 
-## 🌿 Ramas del Proyecto
+## Ramas del Proyecto
 | Rama | Propósito |
 |------|-----------|
 | `main` | Producción — protegida, solo merge por PR |
@@ -30,12 +30,12 @@ operan con procesos semi-manuales de recaudación (agua, cooperaciones, etc).
 | `docs/github-flow` | Documentación del flujo de trabajo Git |
 | `docs/projectcharter` | Project Charter del equipo |
 
-## 🚀 Stack Tecnológico
+##  Stack Tecnológico
 - **Frontend:** React + Vite 5
 - **Node:** v20.18
 - **Deploy:** Vercel
 
-## 📁 Estructura del Repositorio
+##  Estructura del Repositorio
 SiCoSe/
 ├── src/
 │   ├── components/
