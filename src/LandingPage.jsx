@@ -459,12 +459,9 @@ function InterfacePreview() {
 const INITIAL_FORM = { nombre: "", comite: "", contacto: "" };
 
 // ============================================================
-// CONFIGURACIÓN GOOGLE FORMS — solo cambia estos 4 valores
+// CONFIGURACIÓN APPS SCRIPT — solo cambia esta URL si redesplegas
 // ============================================================
-const FORM_ID        = "1FAlpQLScPmBS_BeXn0Oz8ldZzd4equNH8bgvZkABpAZv9GpubhavQlg";
-const ENTRY_NOMBRE   = "entry.1486824996";
-const ENTRY_COMITE   = "entry.2030326656";
-const ENTRY_CONTACTO = "entry.1077332146";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzozzAcSL_UBHs_w6RtnaNgjkiA8nRHDp8ZN4lT7i_yNo8nGOQSbUymVcBoXvJQsmRT/exec";
 // ============================================================
 
 function FormularioContacto() {
@@ -485,27 +482,25 @@ function FormularioContacto() {
     setCargando(true);
     setError(false);
 
-    const url = `https://docs.google.com/forms/d/${FORM_ID}/formResponse`;
-
-    const body = new FormData();
-    body.append(ENTRY_NOMBRE,   formData.nombre);
-    body.append(ENTRY_COMITE,   formData.comite);
-    body.append(ENTRY_CONTACTO, formData.contacto);
-
     try {
-      // mode: "no-cors" es obligatorio con Google Forms.
-      // La respuesta siempre es "opaca" (no se puede leer),
-      // pero el dato SÍ llega a tu hoja de Google Sheets.
-      await fetch(url, { method: "POST", body, mode: "no-cors" });
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+        // Apps Script redirige a una URL de google.com al responder,
+        // lo que dispara un error CORS en el cliente — es esperado.
+        // El dato YA fue escrito en Sheets antes de la redirección.
+        mode: "no-cors",
+      });
+      // Con no-cors la respuesta es opaca pero el POST llegó correctamente.
+      setEnviado(true);
+      setFormData(INITIAL_FORM);
     } catch (_) {
-      // Con no-cors el catch se dispara normalmente — NO es un error real.
-      // El envío llegó igual. Solo registramos por si acaso.
-      console.warn("SiCoSe: respuesta opaca de Google Forms (comportamiento esperado).");
+      // Si hay un error de red real lo mostramos
+      setError(true);
+    } finally {
+      setCargando(false);
     }
-
-    setCargando(false);
-    setEnviado(true);
-    setFormData(INITIAL_FORM);
   }
 
   return (
