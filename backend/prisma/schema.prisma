@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id          String      @id @default(uuid())
+  email       String      @unique
+  password    String
+  nombre      String
+  rol         String
+  activo      Boolean     @default(true)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  auditorias  Auditoria[]
+}
+
+model Ciudadano {
+  id              String       @id @default(uuid())
+  nombre          String
+  apellido        String
+  email           String       @unique
+  telefono        String?
+  direccion       String?
+  clave_catastral String       @unique
+  adeudos         Adeudo[]
+  pagos           Pago[]
+  comprobantes    Comprobante[]
+  reportes        Reporte[]
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+
+  @@index([email])
+  @@index([clave_catastral])
+}
+
+model Servicio {
+  id          String      @id @default(uuid())
+  nombre      String
+  descripcion String?
+  tarifa      Float
+  adeudos     Adeudo[]
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+}
+
+model Adeudo {
+  id             String      @id @default(uuid())
+  ciudadano      Ciudadano   @relation(fields: [ciudadanoId], references: [id])
+  ciudadanoId    String
+  servicio       Servicio    @relation(fields: [servicioId], references: [id])
+  servicioId     String
+  monto          Float
+  periodo        String
+  vencimiento    DateTime
+  pagado         Boolean     @default(false)
+  pagos          Pago[]
+  comprobantes   Comprobante[]
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @updatedAt
+
+  @@index([ciudadanoId])
+  @@index([servicioId])
+}
+
+model Pago {
+  id          String      @id @default(uuid())
+  ciudadano   Ciudadano   @relation(fields: [ciudadanoId], references: [id])
+  ciudadanoId String
+  adeudo      Adeudo      @relation(fields: [adeudoId], references: [id])
+  adeudoId    String
+  monto       Float
+  fecha       DateTime    @default(now())
+  metodo      String
+  recibo      String?
+  creado_por  String?
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+
+  @@index([ciudadanoId])
+  @@index([adeudoId])
+}
+
+model Comprobante {
+  id           String      @id @default(uuid())
+  ciudadano    Ciudadano   @relation(fields: [ciudadanoId], references: [id])
+  ciudadanoId  String
+  adeudo       Adeudo      @relation(fields: [adeudoId], references: [id])
+  adeudoId     String
+  tipo         String
+  url          String
+  fecha        DateTime    @default(now())
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+
+  @@index([ciudadanoId])
+  @@index([adeudoId])
+}
+
+model Auditoria {
+  id          String      @id @default(uuid())
+  usuario     Usuario     @relation(fields: [usuarioId], references: [id])
+  usuarioId   String
+  accion      String
+  entidad     String
+  entidad_id  String
+  detalles    String?
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+
+  @@index([usuarioId])
+}
+
+model Reporte {
+  id           String      @id @default(uuid())
+  ciudadano    Ciudadano   @relation(fields: [ciudadanoId], references: [id])
+  ciudadanoId  String
+  titulo       String
+  descripcion  String?
+  tipo         String
+  estado       String      @default("PENDIENTE")
+  fecha        DateTime    @default(now())
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+
+  @@index([ciudadanoId])
+}

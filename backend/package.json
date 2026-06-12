@@ -6,17 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/index.ts",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^5.18.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.0.0-beta.1",
-    "prisma": "^7.8.0"
+    "prisma": "^5.18.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
