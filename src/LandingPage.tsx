@@ -458,11 +458,7 @@ function InterfacePreview() {
 // ------ Formulario de Captura ------
 const INITIAL_FORM = { nombre: "", comite: "", contacto: "" };
 
-// ============================================================
-// CONFIGURACIÓN APPS SCRIPT — solo cambia esta URL si redesplegas
-// ============================================================
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzozzAcSL_UBHs_w6RtnaNgjkiA8nRHDp8ZN4lT7i_yNo8nGOQSbUymVcBoXvJQsmRT/exec";
-// ============================================================
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000";
 
 function FormularioContacto() {
   const [formData, setFormData] = useState(INITIAL_FORM);
@@ -483,16 +479,14 @@ function FormularioContacto() {
     setError(false);
 
     try {
-      const res = await fetch(APPS_SCRIPT_URL, {
+      const response = await fetch(`${API_BASE_URL}/api/leads`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-        // Apps Script redirige a una URL de google.com al responder,
-        // lo que dispara un error CORS en el cliente — es esperado.
-        // El dato YA fue escrito en Sheets antes de la redirección.
-        mode: "no-cors",
       });
-      // Con no-cors la respuesta es opaca pero el POST llegó correctamente.
+      if (!response.ok) {
+        throw new Error("Lead submission failed");
+      }
       setEnviado(true);
       setFormData(INITIAL_FORM);
     } catch (_) {

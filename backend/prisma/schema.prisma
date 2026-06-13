@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  tesorero
+  secretaria
+}
+
+enum ServiceType {
+  agua
+  predial
+  cooperacion
+}
+
+enum DebtStatus {
+  pendiente
+  pagado
+  vencido
+}
+
+enum PaymentMethod {
+  efectivo
+  transferencia
+}
+
+model User {
+  id           String    @id @default(uuid())
+  nombre       String
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  rol          UserRole
+  activo       Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  auditorias   Audit[]
+  pagos        Payment[]
+
+  @@map("usuarios")
+}
+
+model Citizen {
+  id              String   @id @default(uuid())
+  nombreCompleto  String   @map("nombre_completo")
+  direccion       String
+  telefono        String?
+  zona            String
+  claveCatastral  String   @unique @map("clave_catastral")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  adeudos         Debt[]
+  pagos           Payment[]
+
+  @@index([zona, nombreCompleto])
+  @@map("ciudadanos")
+}
+
+model Service {
+  id         String      @id @default(uuid())
+  nombre     String
+  descripcion String?
+  montoBase  Decimal     @map("monto_base") @db.Decimal(10, 2)
+  tipo       ServiceType
+  activo     Boolean     @default(true)
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  adeudos    Debt[]
+  pagos      Payment[]
+
+  @@index([tipo, activo])
+  @@map("servicios")
+}
+
+model Debt {
+  id               String      @id @default(uuid())
+  citizenId        String      @map("ciudadano_id")
+  serviceId        String      @map("servicio_id")
+  year             Int         @map("año")
+  month            Int
+  monto            Decimal     @db.Decimal(10, 2)
+  estado           DebtStatus
+  fechaVencimiento DateTime    @map("fecha_vencimiento")
+  createdAt        DateTime    @default(now()) @map("created_at")
+  updatedAt        DateTime    @updatedAt @map("updated_at")
+  citizen          Citizen     @relation(fields: [citizenId], references: [id])
+  service          Service     @relation(fields: [serviceId], references: [id])
+  payment          Payment?
+
+  @@index([citizenId, estado])
+  @@index([serviceId, year])
+  @@map("adeudos")
+}
+
+model Payment {
+  id              String        @id @default(uuid())
+  debtId          String        @unique @map("adeudo_id")
+  citizenId       String        @map("ciudadano_id")
+  serviceId       String        @map("servicio_id")
+  userId          String        @map("usuario_id")
+  folio           String        @unique
+  monto           Decimal       @db.Decimal(10, 2)
+  metodo          PaymentMethod
+  comprobanteUrl  String?       @map("comprobante_url")
+  comprobanteHash String?       @map("comprobante_hash")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  debt            Debt          @relation(fields: [debtId], references: [id])
+  citizen         Citizen       @relation(fields: [citizenId], references: [id])
+  service         Service       @relation(fields: [serviceId], references: [id])
+  user            User          @relation(fields: [userId], references: [id])
+
+  @@map("pagos")
+}
+
+model Audit {
+  id            String   @id @default(uuid())
+  userId        String   @map("usuario_id")
+  accion        String
+  tabla         String   @map("tabla_afectada")
+  registroId    String?  @map("registro_id")
+  ip            String?
+  userAgent     String?  @map("user_agent")
+  detalleJson   Json?    @map("detalle_json")
+  createdAt     DateTime @default(now()) @map("created_at")
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@map("auditorias")
+}
+
+model Report {
+  id          String   @id @default(uuid())
+  titulo      String
+  tipo        String
+  url         String?  @map("url_descarga")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("reportes")
+}
