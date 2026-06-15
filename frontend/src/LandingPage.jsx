@@ -595,16 +595,7 @@ function InterfacePreview() {
 // ------ Formulario de Captura ------
 const INITIAL_FORM = { nombre: "", comite: "", contacto: "" };
 
-<<<<<<<< HEAD:frontend/src/LandingPage.tsx
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000";
-========
-// ============================================================
-// CONFIGURACIÓN APPS SCRIPT — solo cambia esta URL si redesplegas
-// ============================================================
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzozzAcSL_UBHs_w6RtnaNgjkiA8nRHDp8ZN4lT7i_yNo8nGOQSbUymVcBoXvJQsmRT/exec";
-// ============================================================
->>>>>>>> origin/develop:frontend/src/LandingPage.jsx
 
 function FormularioContacto() {
   const [formData, setFormData] = useState(INITIAL_FORM);
