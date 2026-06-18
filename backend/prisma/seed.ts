@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 
 dotenv.config();
 const prisma = new PrismaClient();
+const passwordHash = await bcrypt.hash("SiCoSe2026!", 12);
 
 async function main() {
   await prisma.comprobante.deleteMany();
@@ -17,9 +19,9 @@ async function main() {
   const admin = await prisma.usuario.create({
     data: {
       email: "admin@sicose.test",
-      password: "admin123",
+      passwordHash,
       nombre: "Administrador",
-      rol: "ADMIN",
+      rol: "admin",
       activo: true,
     },
   });
