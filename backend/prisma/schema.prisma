@@ -27,7 +27,9 @@ model Ciudadano {
   email           String        @unique
   telefono        String?
   direccion       String?
+  zona            String?
   clave_catastral String        @unique
+  activo          Boolean       @default(true)
   adeudos         Adeudo[]
   pagos           Pago[]
   comprobantes    Comprobante[]
@@ -36,6 +38,7 @@ model Ciudadano {
   updated_at      DateTime      @updatedAt
 
   @@index([email])
+  @@index([zona])
   @@index([clave_catastral])
 }
 

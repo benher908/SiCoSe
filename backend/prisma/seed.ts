@@ -59,7 +59,9 @@ async function main() {
         email: "maria.gonzalez@test.com",
         telefono: "5512345678",
         direccion: "Calle 1 #100",
+        zona: "Centro",
         clave_catastral: "CAT-0001",
+        activo: true,
       },
       {
         nombre: "Jose",
@@ -67,7 +69,9 @@ async function main() {
         email: "jose.ramirez@test.com",
         telefono: "5512345679",
         direccion: "Calle 2 #200",
+        zona: "Norte",
         clave_catastral: "CAT-0002",
+        activo: true,
       },
       {
         nombre: "Ana",
@@ -75,7 +79,9 @@ async function main() {
         email: "ana.lopez@test.com",
         telefono: "5512345680",
         direccion: "Calle 3 #300",
+        zona: "Sur",
         clave_catastral: "CAT-0003",
+        activo: true,
       },
       {
         nombre: "Luis",
@@ -83,7 +89,9 @@ async function main() {
         email: "luis.martinez@test.com",
         telefono: "5512345681",
         direccion: "Calle 4 #400",
+        zona: "Centro",
         clave_catastral: "CAT-0004",
+        activo: true,
       },
       {
         nombre: "Cecilia",
@@ -91,7 +99,9 @@ async function main() {
         email: "cecilia.sanchez@test.com",
         telefono: "5512345682",
         direccion: "Calle 5 #500",
+        zona: "Poniente",
         clave_catastral: "CAT-0005",
+        activo: true,
       },
     ],
   });
