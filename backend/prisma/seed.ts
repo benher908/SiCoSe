@@ -20,21 +20,21 @@ async function main() {
   const usuarios = await prisma.usuario.createMany({
     data: [
       {
-        email: "cristian@sicose.test",
+        email: "cristian@junta.gob.mx",
         passwordHash,
         nombre: "Cristian",
         rol: "admin",
         activo: true,
       },
       {
-        email: "gertrudis@sicose.test",
+        email: "gertrudis@junta.gob.mx",
         passwordHash,
         nombre: "Gertrudis",
         rol: "tesorero",
         activo: true,
       },
       {
-        email: "marianerida@sicose.test",
+        email: "maria.nerida@junta.gob.mx",
         passwordHash,
         nombre: "Maria Nerida",
         rol: "secretaria",

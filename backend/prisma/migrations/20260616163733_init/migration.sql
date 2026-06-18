@@ -2,7 +2,7 @@
 CREATE TABLE "Usuario" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password_hash" TEXT NOT NULL,
     "nombre" TEXT NOT NULL,
     "rol" TEXT NOT NULL,
     "activo" BOOLEAN NOT NULL DEFAULT true,
