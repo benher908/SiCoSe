@@ -1,5 +1,5 @@
 generator client {
-provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -62,6 +62,7 @@ model Adeudo {
   periodo      String
   vencimiento  DateTime
   pagado       Boolean       @default(false)
+  estado       String        @default("pendiente")
   pagos        Pago[]
   comprobantes Comprobante[]
   created_at   DateTime      @default(now())
@@ -80,6 +81,7 @@ model Pago {
   monto       Float
   fecha       DateTime  @default(now())
   metodo      String
+  folio       String?   @unique
   recibo      String?
   creado_por  String?
   created_at  DateTime  @default(now())
@@ -113,6 +115,8 @@ model Auditoria {
   entidad     String
   entidad_id  String
   detalles    String?
+  ip          String?
+  timestamp   DateTime @default(now())
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 

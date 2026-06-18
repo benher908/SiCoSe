@@ -13,6 +13,8 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('8h'),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60000),
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
+  RATE_LIMIT_EMAIL_WINDOW_MS: z.coerce.number().int().positive().default(300000),
+  RATE_LIMIT_EMAIL_MAX: z.coerce.number().int().positive().default(5),
 })
 
 const parsed = envSchema.safeParse(process.env)
