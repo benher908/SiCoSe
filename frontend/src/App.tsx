@@ -1,5 +1,6 @@
-import LandingPage from './LandingPage'
+import LandingPage from './LandingPage.jsx'
 import LoginPage from './pages/auth/LoginPage'
+import CitizenManagementPage from './pages/citizens/CitizenManagementPage'
 
 export default function App() {
   const pathname =
@@ -7,5 +8,13 @@ export default function App() {
       ? window.location.pathname.replace(/\/+$/, '') || '/'
       : '/'
 
-  return pathname === '/login' ? <LoginPage /> : <LandingPage />
+  if (pathname === '/login') {
+    return <LoginPage />
+  }
+
+  if (pathname === '/ciudadanos') {
+    return <CitizenManagementPage />
+  }
+
+  return <LandingPage />
 }
