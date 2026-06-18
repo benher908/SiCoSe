@@ -96,8 +96,47 @@ async function main() {
     ],
   });
 
+  const [aguaPotable, alcantarillado, recoleccionBasura] = await prisma.servicio.findMany({
+    orderBy: { nombre: "asc" },
+  });
+  const [ana, cecilia, jose] = await prisma.ciudadano.findMany({
+    orderBy: { email: "asc" },
+  });
+
+  const adeudos = await prisma.adeudo.createMany({
+    data: [
+      {
+        ciudadanoId: ana.id,
+        servicioId: aguaPotable.id,
+        monto: 45.5,
+        periodo: "2026-06",
+        vencimiento: new Date("2026-06-30T00:00:00.000Z"),
+        estado: "pendiente",
+        pagado: false,
+      },
+      {
+        ciudadanoId: cecilia.id,
+        servicioId: alcantarillado.id,
+        monto: 32,
+        periodo: "2026-06",
+        vencimiento: new Date("2026-06-30T00:00:00.000Z"),
+        estado: "pendiente",
+        pagado: false,
+      },
+      {
+        ciudadanoId: jose.id,
+        servicioId: recoleccionBasura.id,
+        monto: 25,
+        periodo: "2026-06",
+        vencimiento: new Date("2026-06-30T00:00:00.000Z"),
+        estado: "pendiente",
+        pagado: false,
+      },
+    ],
+  });
+
   console.log(
-    `Seed completado: ${usuarios.count} usuarios, ${servicios.count} servicios, ${ciudadanos.count} ciudadanos creados.`,
+    `Seed completado: ${usuarios.count} usuarios, ${servicios.count} servicios, ${ciudadanos.count} ciudadanos, ${adeudos.count} adeudos creados.`,
   );
 }
 
