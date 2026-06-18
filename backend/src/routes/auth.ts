@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { prisma } from '../lib/prisma.js'
 import { signAuthToken, verifyAuthToken } from '../lib/jwt.js'
 import { blacklistToken, isTokenBlacklisted } from '../lib/token-blacklist.js'
-import { rateLimit } from '../middleware/rate-limit.js'
+import { loginRateLimit, resetLoginEmailAttempts } from '../middleware/rate-limit.js'
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -21,7 +21,7 @@ function getBearerToken(header: string | undefined) {
 
 export const authRouter = Router()
 
-authRouter.post('/login', rateLimit, async (request, response, next) => {
+authRouter.post('/login', loginRateLimit, async (request, response, next) => {
   try {
     const parsed = loginSchema.safeParse(request.body)
 
@@ -46,6 +46,8 @@ authRouter.post('/login', rateLimit, async (request, response, next) => {
         code: 401,
       })
     }
+
+    await resetLoginEmailAttempts(user.email)
 
     const token = await signAuthToken({
       sub: user.id,

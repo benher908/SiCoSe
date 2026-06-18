@@ -1,5 +1,5 @@
 generator client {
-provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -27,7 +27,9 @@ model Ciudadano {
   email           String        @unique
   telefono        String?
   direccion       String?
+  zona            String?
   clave_catastral String        @unique
+  activo          Boolean       @default(true)
   adeudos         Adeudo[]
   pagos           Pago[]
   comprobantes    Comprobante[]
@@ -36,6 +38,7 @@ model Ciudadano {
   updated_at      DateTime      @updatedAt
 
   @@index([email])
+  @@index([zona])
   @@index([clave_catastral])
 }
 
@@ -59,6 +62,7 @@ model Adeudo {
   periodo      String
   vencimiento  DateTime
   pagado       Boolean       @default(false)
+  estado       String        @default("pendiente")
   pagos        Pago[]
   comprobantes Comprobante[]
   created_at   DateTime      @default(now())
@@ -77,8 +81,10 @@ model Pago {
   monto       Float
   fecha       DateTime  @default(now())
   metodo      String
+  folio       String?   @unique
   recibo      String?
   creado_por  String?
+  comprobantes Comprobante[]
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
 
@@ -92,14 +98,23 @@ model Comprobante {
   ciudadanoId String
   adeudo      Adeudo    @relation(fields: [adeudoId], references: [id])
   adeudoId    String
+  pago        Pago?     @relation(fields: [pagoId], references: [id])
+  pagoId      String?
   tipo        String
   url         String
+  hash_sha256 String?
+  nombre_archivo String?
+  mime_type   String?
+  tamano_bytes Int?
+  storage_path String?
   fecha       DateTime  @default(now())
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
 
   @@index([ciudadanoId])
   @@index([adeudoId])
+  @@index([pagoId])
+  @@index([hash_sha256])
 }
 
 model Auditoria {
@@ -110,6 +125,8 @@ model Auditoria {
   entidad     String
   entidad_id  String
   detalles    String?
+  ip          String?
+  timestamp   DateTime @default(now())
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
