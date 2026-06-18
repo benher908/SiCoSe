@@ -5,6 +5,7 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 async function main() {
+  // Limpiar tablas para evitar duplicados
   await prisma.comprobante.deleteMany();
   await prisma.pago.deleteMany();
   await prisma.adeudo.deleteMany();
@@ -14,14 +15,31 @@ async function main() {
   await prisma.ciudadano.deleteMany();
   await prisma.servicio.deleteMany();
 
-  const admin = await prisma.usuario.create({
-    data: {
-      email: "admin@sicose.test",
-      password: "admin123",
-      nombre: "Administrador",
-      rol: "ADMIN",
-      activo: true,
-    },
+  // CREACIÓN DE USUARIOS DEL ISSUE #002
+  const usuarios = await prisma.usuario.createMany({
+    data: [
+      {
+        email: "cristian@sicose.test",
+        password: "SiCoSe2026!",
+        nombre: "Cristian",
+        rol: "ADMIN",
+        activo: true,
+      },
+      {
+        email: "gertrudis@sicose.test",
+        password: "SiCoSe2026!",
+        nombre: "Gertrudis",
+        rol: "USUARIO",
+        activo: true,
+      },
+      {
+        email: "marianerida@sicose.test",
+        password: "SiCoSe2026!",
+        nombre: "María Nerida",
+        rol: "USUARIO",
+        activo: true,
+      }
+    ],
   });
 
   const servicios = await prisma.servicio.createMany({
@@ -31,8 +49,6 @@ async function main() {
       { nombre: "Recolección de basura", descripcion: "Servicio de recolección semanal", tarifa: 25.0 },
     ],
   });
-
-  const servicioRecords = await prisma.servicio.findMany();
 
   const ciudadanos = await prisma.ciudadano.createMany({
     data: [
@@ -79,9 +95,7 @@ async function main() {
     ],
   });
 
-  const ciudadanoRecords = await prisma.ciudadano.findMany();
-
-  console.log({ admin, servicios, ciudadanos: ciudadanoRecords.length });
+  console.log(`Seed completado: ${usuarios.count} usuarios, ${servicios.count} servicios, ${ciudadanos.count} ciudadanos creados.`);
 }
 
 main()
