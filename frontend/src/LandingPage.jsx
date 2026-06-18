@@ -8,6 +8,8 @@
 
 // ------ Sub-componentes ------
 
+import RoutePills from './components/RoutePills'
+
 const NAV_LINKS = [
   { label: "El Problema", href: "#problema" },
   { label: "Módulos", href: "#modulos" },
@@ -22,7 +24,7 @@ function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0f3042] shadow-lg">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2">
+        <a href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-md bg-[#f97316] flex items-center justify-center">
             <svg
               width="18"
@@ -58,6 +60,9 @@ function Navbar() {
               </a>
             </li>
           ))}
+          <li className="hidden lg:flex">
+            <RoutePills variant="light" />
+          </li>
           <li>
             <a
               href="#contacto"
@@ -108,6 +113,11 @@ function Navbar() {
       {/* Menú mobile desplegable */}
       {isOpen && (
         <div className="md:hidden bg-[#0a2535] border-t border-white/10 px-4 py-4 flex flex-col gap-3">
+          <RoutePills
+            variant="light"
+            className="justify-start"
+            ariaLabel="Navegación rápida de pantallas"
+          />
           {NAV_LINKS.map((l) => (
             <a
               key={l.href}

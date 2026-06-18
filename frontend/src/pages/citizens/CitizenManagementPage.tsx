@@ -1,8 +1,28 @@
 import CitizenManagementPanel from '../../features/citizens/CitizenManagementPanel'
+import RoutePills from '../../components/RoutePills'
 
 export default function CitizenManagementPage() {
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(15,48,66,0.12),_transparent_42%),linear-gradient(180deg,#f8fafc_0%,#eef4f8_100%)] text-slate-900">
+      <header className="mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <a
+          href="/"
+          className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/90 px-4 py-2 shadow-sm backdrop-blur transition-colors hover:border-[#0f3042]/20 hover:bg-white"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0f3042] text-sm font-bold text-white shadow-lg shadow-[#0f3042]/15">
+            SC
+          </div>
+          <div className="text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#0f3042]">
+              SiCoSe
+            </p>
+            <p className="text-sm text-slate-500">Navegación de evaluación</p>
+          </div>
+        </a>
+
+        <RoutePills variant="dark" />
+      </header>
+
       <section className="border-b border-slate-200/80 bg-white/75 backdrop-blur">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <span className="inline-flex items-center rounded-full border border-[#0f3042]/10 bg-[#0f3042]/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-[#0f3042]">

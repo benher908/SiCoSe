@@ -3,6 +3,7 @@ import { login } from '../../features/auth/auth.api'
 import { persistAuthSession } from '../../features/auth/auth.session'
 import type { LoginRequest } from '../../features/auth/auth.types'
 import { API_BASE_URL } from '../../lib/api'
+import RoutePills from '../../components/RoutePills'
 
 const highlights = [
   {
@@ -41,7 +42,26 @@ export default function LoginPage() {
       <div className="absolute -left-20 top-12 h-72 w-72 rounded-full bg-[#f97316]/15 blur-3xl" />
       <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-sky-400/10 blur-3xl" />
 
-      <div className="relative mx-auto grid min-h-screen max-w-7xl gap-10 px-4 py-10 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-14">
+      <header className="relative z-10 mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-5 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <a
+          href="/"
+          className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur transition-colors hover:bg-white/10"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f97316] text-sm font-bold text-white shadow-lg shadow-[#f97316]/20">
+            SC
+          </div>
+          <div className="text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#f97316]">
+              SiCoSe
+            </p>
+            <p className="text-sm text-slate-300">Navegación de evaluación</p>
+          </div>
+        </a>
+
+        <RoutePills variant="light" />
+      </header>
+
+      <div className="relative mx-auto grid min-h-screen max-w-7xl gap-10 px-4 pb-10 pt-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-12">
         <section className="flex flex-col justify-center gap-8">
           <div className="max-w-2xl space-y-6">
             <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#f97316] backdrop-blur">
@@ -114,4 +134,3 @@ export default function LoginPage() {
     </main>
   )
 }
-

@@ -1,4 +1,4 @@
-import LandingPage from './LandingPage'
+import LandingPage from './LandingPage.jsx'
 import LoginPage from './pages/auth/LoginPage'
 import CitizenManagementPage from './pages/citizens/CitizenManagementPage'
 
