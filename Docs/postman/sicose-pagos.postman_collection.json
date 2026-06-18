@@ -130,6 +130,32 @@
         },
         "description": "Registra pago por transferencia. El archivo debe ser jpg, png o pdf real y pesar maximo 5MB."
       }
+    },
+    {
+      "name": "Generar adeudos del mes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"periodo\": \"{{periodo}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/adeudos/generar",
+          "host": ["{{base_url}}"],
+          "path": ["api", "adeudos", "generar"]
+        },
+        "description": "Genera adeudos mensuales para cada ciudadano activo y servicio existente. Es idempotente por ciudadano, servicio y periodo."
+      }
     }
   ],
   "variable": [
@@ -152,6 +178,10 @@
     {
       "key": "referencia_bancaria",
       "value": "123456"
+    },
+    {
+      "key": "periodo",
+      "value": "2026-06"
     }
   ]
 }
