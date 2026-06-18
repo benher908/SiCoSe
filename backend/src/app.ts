@@ -11,6 +11,7 @@ import { dashboardRouter } from './routes/dashboard.js'
 import { healthRouter } from './routes/health.js'
 import { leadsRouter } from './routes/leads.js'
 import { pagosRouter } from './routes/pagos.js'
+import { reportesRouter } from './routes/reportes.js'
 
 export function createApp() {
   const app = express()
@@ -34,6 +35,7 @@ export function createApp() {
   app.use('/api/ciudadanos', ciudadanosRouter)
   app.use('/api/dashboard', dashboardRouter)
   app.use('/api/pagos', pagosRouter)
+  app.use('/api/reportes', reportesRouter)
 
   app.use((_request, response) => {
     response.status(404).json({
