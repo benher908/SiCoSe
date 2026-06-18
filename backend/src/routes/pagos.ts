@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { authenticate, requireRole } from '../middleware/require-role.js'
 import type { AuthenticatedRequest } from '../types/auth.js'
 import { PaymentError, registerCashPayment } from '../services/pagos.js'
+import { generatePaymentReceiptPdf, ReceiptError } from '../services/recibos.js'
 
 const createCashPaymentSchema = z.object({
   metodo: z.literal('efectivo'),
@@ -16,6 +17,45 @@ function getRequestIp(request: AuthenticatedRequest) {
 }
 
 export const pagosRouter = Router()
+
+function getParamId(id: string | string[] | undefined) {
+  return Array.isArray(id) ? id[0] : id
+}
+
+pagosRouter.get(
+  '/:id/recibo',
+  authenticate,
+  requireRole('admin', 'tesorero', 'secretaria'),
+  async (request, response, next) => {
+    try {
+      const paymentId = getParamId(request.params.id)
+
+      if (!paymentId) {
+        return response.status(400).json({
+          error: 'Missing payment id',
+          code: 400,
+        })
+      }
+
+      const receipt = await generatePaymentReceiptPdf(paymentId)
+
+      response.setHeader('Content-Type', 'application/pdf')
+      response.setHeader('Content-Length', String(receipt.buffer.length))
+      response.setHeader('Content-Disposition', `inline; filename="${receipt.filename}"`)
+
+      return response.send(receipt.buffer)
+    } catch (error) {
+      if (error instanceof ReceiptError) {
+        return response.status(error.statusCode).json({
+          error: error.message,
+          code: error.statusCode,
+        })
+      }
+
+      return next(error)
+    }
+  },
+)
 
 pagosRouter.post(
   '/',
