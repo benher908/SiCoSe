@@ -4,4 +4,9 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  test: {
+    environment: "happy-dom",
+    globals: true,
+    setupFiles: "./src/test/setup.js",
+  },
 });
