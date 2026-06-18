@@ -1,5 +1,11 @@
 import LandingPage from './LandingPage'
+import LoginPage from './pages/auth/LoginPage'
 
 export default function App() {
-  return <LandingPage />
+  const pathname =
+    typeof window !== 'undefined'
+      ? window.location.pathname.replace(/\/+$/, '') || '/'
+      : '/'
+
+  return pathname === '/login' ? <LoginPage /> : <LandingPage />
 }
