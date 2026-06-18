@@ -70,6 +70,7 @@ model Adeudo {
 
   @@index([ciudadanoId])
   @@index([servicioId])
+  @@unique([ciudadanoId, servicioId, periodo])
 }
 
 model Pago {
