@@ -3,6 +3,12 @@ import { Router } from 'express'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma.js'
 import { authenticate, requireRole } from '../middleware/require-role.js'
+import { generateMonthlyDebts } from '../services/adeudos.js'
+
+const generateDebtsSchema = z.object({
+  periodo: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/).optional(),
+  vencimiento: z.coerce.date().optional(),
+})
 
 const morososQuerySchema = z.object({
   pagina: z.coerce.number().int().min(1).default(1),
@@ -38,9 +44,8 @@ function buildPeriodFilter(year?: number, month?: number) {
   }
 }
 
-function buildWhere(input: z.infer<typeof morososQuerySchema>) {
-  const year = input.anio
-  const periodFilter = buildPeriodFilter(year, input.mes)
+function buildMorososWhere(input: z.infer<typeof morososQuerySchema>) {
+  const periodFilter = buildPeriodFilter(input.anio, input.mes)
   const where: Prisma.AdeudoWhereInput = {
     pagado: false,
     OR: [
@@ -75,6 +80,32 @@ function buildWhere(input: z.infer<typeof morososQuerySchema>) {
   return where
 }
 
+adeudosRouter.post(
+  '/generar',
+  requireRole('admin', 'tesorero'),
+  async (request, response, next) => {
+    try {
+      const parsed = generateDebtsSchema.safeParse(request.body ?? {})
+
+      if (!parsed.success) {
+        return response.status(400).json({
+          error: 'Invalid debt generation payload',
+          details: parsed.error.flatten(),
+        })
+      }
+
+      const result = await generateMonthlyDebts(parsed.data)
+
+      return response.status(201).json({
+        message: 'Monthly debts generated',
+        data: result,
+      })
+    } catch (error) {
+      next(error)
+    }
+  },
+)
+
 adeudosRouter.get(
   '/morosos',
   requireRole('admin', 'tesorero', 'secretaria'),
@@ -90,7 +121,7 @@ adeudosRouter.get(
       }
 
       const { pagina } = parsed.data
-      const where = buildWhere(parsed.data)
+      const where = buildMorososWhere(parsed.data)
 
       const [total, cartera, adeudos] = await prisma.$transaction([
         prisma.adeudo.count({ where }),

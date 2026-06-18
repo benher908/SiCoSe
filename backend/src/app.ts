@@ -30,6 +30,7 @@ export function createApp() {
   app.use('/api/leads', leadsRouter)
   app.use('/api/adeudos', adeudosRouter)
   app.use('/api/auth', authRouter)
+  app.use('/api/adeudos', adeudosRouter)
   app.use('/api/ciudadanos', ciudadanosRouter)
   app.use('/api/dashboard', dashboardRouter)
   app.use('/api/pagos', pagosRouter)
