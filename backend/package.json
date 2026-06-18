@@ -8,6 +8,7 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test dist/test/require-role.test.js",
     "seed": "tsx prisma/seed.ts",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio"
@@ -22,6 +23,7 @@
     "dotenv": "^16.4.5",
     "express": "^5.1.0",
     "helmet": "^8.0.0",
+    "ioredis": "^5.11.1",
     "jose": "^5.9.6",
     "morgan": "^1.10.0",
     "multer": "^2.0.1",

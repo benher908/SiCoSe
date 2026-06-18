@@ -28,5 +28,6 @@ export async function verifyAuthToken(token: string) {
     sub: result.payload.sub ?? '',
     email: String(result.payload.email ?? ''),
     rol: String(result.payload.rol ?? ''),
+    exp: Number(result.payload.exp ?? 0),
   }
 }
