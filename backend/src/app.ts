@@ -4,6 +4,7 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import { env } from './config/env.js'
 import { errorHandler } from './middleware/error-handler.js'
+import { adeudosRouter } from './routes/adeudos.js'
 import { authRouter } from './routes/auth.js'
 import { ciudadanosRouter } from './routes/ciudadanos.js'
 import { dashboardRouter } from './routes/dashboard.js'
@@ -27,6 +28,7 @@ export function createApp() {
   app.use('/health', healthRouter)
   app.use('/api/health', healthRouter)
   app.use('/api/leads', leadsRouter)
+  app.use('/api/adeudos', adeudosRouter)
   app.use('/api/auth', authRouter)
   app.use('/api/ciudadanos', ciudadanosRouter)
   app.use('/api/dashboard', dashboardRouter)
