@@ -1,7 +1,7 @@
 ﻿import { useState } from "react";
 
 // ============================================================
-// SiCoSe â€” Sistema de Cobros de Servicios
+// SiCoSe — Sistema de Cobros de Servicios
 // Bloque 1: Landing Page (Mobile-First)
 // Paleta: #0f3042 (azul oscuro) | #f97316 (naranja CTA)
 // ============================================================
@@ -10,7 +10,7 @@
 
 const NAV_LINKS = [
   { label: "El Problema", href: "#problema" },
-  { label: "MÃ³dulos", href: "#modulos" },
+  { label: "Módulos", href: "#modulos" },
   { label: "Vista Previa", href: "#preview" },
   { label: "Contacto", href: "#contacto" },
 ];
@@ -46,7 +46,7 @@ function Navbar() {
           </span>
         </a>
 
-        {/* Links â€” desktop */}
+        {/* Links — desktop */}
         <ul className="hidden md:flex items-center gap-6">
           {NAV_LINKS.map((l) => (
             <li key={l.href}>
@@ -68,11 +68,11 @@ function Navbar() {
           </li>
         </ul>
 
-        {/* Hamburguesa â€” mobile */}
+        {/* Hamburguesa — mobile */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden text-white p-2 rounded-md hover:bg-white/10 transition-colors"
-          aria-label="Abrir menÃº"
+          aria-label="Abrir menú"
         >
           {isOpen ? (
             <svg
@@ -105,7 +105,7 @@ function Navbar() {
         </button>
       </div>
 
-      {/* MenÃº mobile desplegable */}
+      {/* Menú mobile desplegable */}
       {isOpen && (
         <div className="md:hidden bg-[#0a2535] border-t border-white/10 px-4 py-4 flex flex-col gap-3">
           {NAV_LINKS.map((l) => (
@@ -123,7 +123,7 @@ function Navbar() {
             onClick={() => setIsOpen(false)}
             className="mt-2 bg-[#f97316] hover:bg-orange-500 text-white font-semibold py-3 rounded-lg text-center transition-colors"
           >
-            Solicitar DemostraciÃ³n Gratis
+            Solicitar Demostración Gratis
           </a>
         </div>
       )}
@@ -135,7 +135,7 @@ function Navbar() {
 function Hero() {
   return (
     <section className="pt-28 pb-20 bg-gradient-to-br from-[#0f3042] via-[#0f3042] to-[#0a2535] text-white relative overflow-hidden">
-      {/* DecoraciÃ³n de fondo */}
+      {/* Decoración de fondo */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-10 right-0 w-96 h-96 rounded-full bg-[#f97316] blur-3xl" />
         <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-blue-400 blur-3xl" />
@@ -144,19 +144,19 @@ function Hero() {
       <div className="relative max-w-5xl mx-auto px-4 text-center">
         {/* Badge */}
         <span className="inline-block bg-[#f97316]/20 border border-[#f97316]/40 text-[#f97316] text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-6">
-          Junta Auxiliar â€¢ Comite
+          Junta Auxiliar • Comite
         </span>
 
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-5 text-balance">
-          Dile adiÃ³s a las{" "}
+          Dile adiós a las{" "}
           <span className="text-[#f97316]">libretas de papel</span>
           <br className="hidden sm:block" /> en tu junta auxiliar
         </h1>
 
         <p className="text-slate-300 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-          SiCoSe digitaliza la recaudaciÃ³n del servicio de agua, el padrÃ³n de
-          usuarios y el historial de pagos y adeudos â€” todo en una sola
-          plataforma accesible desde tu telÃ©fono celular.
+          SiCoSe digitaliza la recaudación del servicio de agua, el padrón de
+          usuarios y el historial de pagos y adeudos — todo en una sola
+          plataforma accesible desde tu teléfono celular.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -164,22 +164,22 @@ function Hero() {
             href="#contacto"
             className="bg-[#f97316] hover:bg-orange-500 active:bg-orange-600 text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg shadow-orange-700/30 transition-all hover:-translate-y-0.5"
           >
-            Solicitar DemostraciÃ³n Gratis
+            Solicitar Demostración Gratis
           </a>
           <a
             href="#modulos"
             className="border border-white/30 hover:border-white/60 text-white font-semibold text-lg px-8 py-4 rounded-xl transition-all hover:bg-white/5"
           >
-            Ver MÃ³dulos â†’
+            Ver Módulos →
           </a>
         </div>
 
-        {/* Stats rÃ¡pidas */}
+        {/* Stats rápidas */}
         <div className="mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto">
           {[
             { val: "100%", label: "Gratuito para la junta" },
             { val: "< 1 min", label: "Consultar un adeudo" },
-            { val: "24/7", label: "Disponible en mÃ³vil" },
+            { val: "24/7", label: "Disponible en móvil" },
           ].map(({ val, label }) => (
             <div key={label} className="text-center">
               <div className="text-2xl sm:text-3xl font-extrabold text-[#f97316]">
@@ -196,28 +196,28 @@ function Hero() {
   );
 }
 
-// ------ SecciÃ³n del Problema ------
+// ------ Sección del Problema ------
 function ProblemaBanner() {
   const dolores = [
     {
-      icon: "ðŸ“’",
+      icon: "📒",
       titulo: "Libretas de papel perdidas",
       desc: "Registros de pago dispersos en cuadernos que se mojan, se pierden o simplemente nadie entiende la letra.",
     },
     {
-      icon: "ðŸ¦",
-      titulo: "ValidaciÃ³n manual de SPEI",
-      desc: "Horas revisando capturas de pantalla de transferencias bancarias que podrÃ­an ser falsas o estar duplicadas.",
+      icon: "🏦",
+      titulo: "Validación manual de SPEI",
+      desc: "Horas revisando capturas de pantalla de transferencias bancarias que podrían ser falsas o estar duplicadas.",
     },
     {
-      icon: "ðŸš¶",
+      icon: "🚶",
       titulo: "Cobros puerta a puerta sin control",
-      desc: "No hay forma de saber quiÃ©n pagÃ³, cuÃ¡ndo pagÃ³ o cuÃ¡ntos periodos tiene adeudados sin ir a buscar fÃ­sicamente el registro.",
+      desc: "No hay forma de saber quién pagó, cuándo pagó o cuántos periodos tiene adeudados sin ir a buscar físicamente el registro.",
     },
     {
-      icon: "âŒ",
+      icon: "❌",
       titulo: "Sin historial centralizado",
-      desc: "Cuando cambia el comitÃ©, la informaciÃ³n del periodo anterior desaparece o se entrega incompleta.",
+      desc: "Cuando cambia el comité, la información del periodo anterior desaparece o se entrega incompleta.",
     },
   ];
 
@@ -229,11 +229,11 @@ function ProblemaBanner() {
             El Problema Real
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-            AsÃ­ se gestiona hoy la recaudaciÃ³n
+            Así se gestiona hoy la recaudación
           </h2>
           <p className="text-slate-400 max-w-xl mx-auto text-base">
-            Validado en entrevistas directas con comitÃ©s de juntas auxiliares de
-            Puebla. El caos no es culpa de las personas â€” es falta de
+            Validado en entrevistas directas con comités de juntas auxiliares de
+            Puebla. El caos no es culpa de las personas — es falta de
             herramientas.
           </p>
         </div>
@@ -256,8 +256,8 @@ function ProblemaBanner() {
         <div className="mt-10 bg-gradient-to-r from-[#f97316]/20 to-transparent border-l-4 border-[#f97316] rounded-xl p-6">
           <p className="text-white text-base sm:text-lg font-medium leading-relaxed">
             <span className="text-[#f97316] font-bold">Resultado:</span> el
-            comitÃ© pierde horas cada semana buscando adeudos, los ciudadanos no
-            confÃ­an en los cobros y el municipio no tiene datos reales sobre la
+            comité pierde horas cada semana buscando adeudos, los ciudadanos no
+            confían en los cobros y el municipio no tiene datos reales sobre la
             cobertura del servicio.
           </p>
         </div>
@@ -266,7 +266,7 @@ function ProblemaBanner() {
   );
 }
 
-// ------ SecciÃ³n de MÃ³dulos (La SoluciÃ³n) ------
+// ------ Sección de Módulos (La Solución) ------
 function Modulos() {
   const modulos = [
     {
@@ -287,8 +287,8 @@ function Modulos() {
         </svg>
       ),
       nombre: "Dashboard Principal",
-      desc: "Visualiza en tiempo real la recaudaciÃ³n del perÃ­odo: efectivo vs. SPEI, total cobrado, adeudos pendientes y cobertura del padrÃ³n.",
-      tag: "MÃ©tricas en tiempo real",
+      desc: "Visualiza en tiempo real la recaudación del período: efectivo vs. SPEI, total cobrado, adeudos pendientes y cobertura del padrón.",
+      tag: "Métricas en tiempo real",
     },
     {
       icon: (
@@ -305,7 +305,7 @@ function Modulos() {
         </svg>
       ),
       nombre: "Login Seguro",
-      desc: "Acceso protegido por usuario y contraseÃ±a. Solo el comitÃ© autorizado puede consultar y editar el padrÃ³n â€” sin riesgo de filtraciones.",
+      desc: "Acceso protegido por usuario y contraseña. Solo el comité autorizado puede consultar y editar el padrón — sin riesgo de filtraciones.",
       tag: "Acceso controlado",
     },
     {
@@ -325,9 +325,9 @@ function Modulos() {
           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
         </svg>
       ),
-      nombre: "PadrÃ³n Digital",
-      desc: "Base de datos de cada usuario con su ID, nombre completo, direcciÃ³n exacta (Zona, Calle, CP) y foto de referencia opcional.",
-      tag: "DirecciÃ³n exacta",
+      nombre: "Padrón Digital",
+      desc: "Base de datos de cada usuario con su ID, nombre completo, dirección exacta (Zona, Calle, CP) y foto de referencia opcional.",
+      tag: "Dirección exacta",
     },
     {
       icon: (
@@ -347,9 +347,9 @@ function Modulos() {
           <polyline points="10 9 9 9 8 9" />
         </svg>
       ),
-      nombre: "Historial LogÃ­stico",
-      desc: "Consulta de un vistazo cuÃ¡ntos periodos pagÃ³ cada usuario y cuÃ¡ntos adeuda. Exportable para rendiciÃ³n de cuentas ante el municipio.",
-      tag: "PerÃ­odos pagados / adeudados",
+      nombre: "Historial Logístico",
+      desc: "Consulta de un vistazo cuántos periodos pagó cada usuario y cuántos adeuda. Exportable para rendición de cuentas ante el municipio.",
+      tag: "Períodos pagados / adeudados",
     },
   ];
 
@@ -358,13 +358,13 @@ function Modulos() {
       <div className="max-w-5xl mx-auto px-4">
         <div className="text-center mb-14">
           <span className="inline-block bg-[#0f3042]/10 border border-[#0f3042]/20 text-[#0f3042] text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4">
-            La SoluciÃ³n
+            La Solución
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0f3042] mb-4">
-            4 mÃ³dulos, un solo sistema
+            4 módulos, un solo sistema
           </h2>
           <p className="text-slate-500 max-w-xl mx-auto text-base">
-            DiseÃ±ado especÃ­ficamente para juntas auxiliares â€” sin funciones
+            Diseñado específicamente para juntas auxiliares — sin funciones
             innecesarias, sin curvas de aprendizaje.
           </p>
         </div>
@@ -393,7 +393,7 @@ function Modulos() {
   );
 }
 
-// ------ SimulaciÃ³n de Interfaz / Vista Previa ------
+// ------ Simulación de Interfaz / Vista Previa ------
 const PREVIEW_DATA = [
   {
     id: "SDC-001",
@@ -406,7 +406,7 @@ const PREVIEW_DATA = [
   },
   {
     id: "SDC-002",
-    nombre: "JosÃ© RamÃ­rez HernÃ¡ndez",
+    nombre: "José Ramírez Hernández",
     zona: "Barrio Alto",
     calle: "Calle Morelos 7",
     cp: "72811",
@@ -415,9 +415,9 @@ const PREVIEW_DATA = [
   },
   {
     id: "SDC-003",
-    nombre: "Esperanza LÃ³pez MÃ©ndez",
+    nombre: "Esperanza López Méndez",
     zona: "Lomas",
-    calle: "Cda. JuÃ¡rez 3",
+    calle: "Cda. Juárez 3",
     cp: "72812",
     pagados: 2,
     adeudados: 6,
@@ -433,7 +433,7 @@ const PREVIEW_DATA = [
   },
   {
     id: "SDC-005",
-    nombre: "Ana Patricia Flores DÃ­az",
+    nombre: "Ana Patricia Flores Díaz",
     zona: "Barrio Bajo",
     calle: "Av. Reforma 88",
     cp: "72813",
@@ -460,11 +460,11 @@ function InterfacePreview() {
             Vista Previa Real
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-            AsÃ­ se ve el PadrÃ³n Digital
+            Así se ve el Padrón Digital
           </h2>
           <p className="text-slate-400 max-w-xl mx-auto text-base">
-            InteractÃºa con esta simulaciÃ³n. Busca por nombre, ID o zona para ver
-            cÃ³mo funciona el buscador en tiempo real.
+            Interactúa con esta simulación. Busca por nombre, ID o zona para ver
+            cómo funciona el buscador en tiempo real.
           </p>
         </div>
 
@@ -495,7 +495,7 @@ function InterfacePreview() {
               type="text"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              placeholder="Buscar por nombre, ID o zonaâ€¦"
+              placeholder="Buscar por nombre, ID o zona…"
               className="bg-transparent text-white placeholder-slate-500 text-sm flex-1 outline-none"
             />
             <span className="text-slate-500 text-xs hidden sm:block">
@@ -512,8 +512,8 @@ function InterfacePreview() {
                     "Nombre",
                     "Zona",
                     "Calle / CP",
-                    "PerÃ­odos Pagados",
-                    "PerÃ­odos Adeudados",
+                    "Períodos Pagados",
+                    "Períodos Adeudados",
                   ].map((h) => (
                     <th key={h} className="text-left px-5 py-3 font-semibold">
                       {h}
@@ -558,11 +558,11 @@ function InterfacePreview() {
                     <td className="px-5 py-3.5">
                       {u.adeudados === 0 ? (
                         <span className="inline-flex items-center gap-1 text-green-400 text-xs font-semibold bg-green-500/10 px-2 py-1 rounded-full">
-                          âœ“ Al corriente
+                          ✓ Al corriente
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 text-red-400 text-xs font-semibold bg-red-500/10 px-2 py-1 rounded-full">
-                          âš  {u.adeudados} pendiente{u.adeudados > 1 && "s"}
+                          ⚠ {u.adeudados} pendiente{u.adeudados > 1 && "s"}
                         </span>
                       )}
                     </td>
@@ -583,8 +583,8 @@ function InterfacePreview() {
           </div>
 
           <div className="px-5 py-3 bg-slate-900 text-slate-500 text-xs flex justify-between items-center">
-            <span>PadrÃ³n: {PREVIEW_DATA.length} usuarios registrados</span>
-            <span>SiCoSe v1.0 â€” San Diego Chalma</span>
+            <span>Padrón: {PREVIEW_DATA.length} usuarios registrados</span>
+            <span>SiCoSe v1.0 — San Diego Chalma</span>
           </div>
         </div>
       </div>
@@ -594,6 +594,7 @@ function InterfacePreview() {
 
 // ------ Formulario de Captura ------
 const INITIAL_FORM = { nombre: "", comite: "", contacto: "" };
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000";
 
 function FormularioContacto() {
@@ -641,25 +642,25 @@ function FormularioContacto() {
             Empieza Hoy
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0f3042] mb-4">
-            Solicita tu DemostraciÃ³n Gratis
+            Solicita tu Demostración Gratis
           </h2>
           <p className="text-slate-500 text-base max-w-md mx-auto">
-            DÃ©janos tus datos y nos ponemos en contacto para mostrarte el
-            sistema funcionando en vivo â€” sin costos, sin compromisos.
+            Déjanos tus datos y nos ponemos en contacto para mostrarte el
+            sistema funcionando en vivo — sin costos, sin compromisos.
           </p>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
           {enviado ? (
-            /* â”€â”€ Estado de Ã©xito â”€â”€ */
+            /* ── Estado de éxito ── */
             <div className="text-center py-8">
-              <div className="text-5xl mb-4">ðŸŽ‰</div>
+              <div className="text-5xl mb-4">🎉</div>
               <h3 className="text-[#0f3042] font-extrabold text-xl mb-2">
-                Â¡Datos recibidos!
+                ¡Datos recibidos!
               </h3>
               <p className="text-slate-500 text-sm">
                 Nos pondremos en contacto contigo muy pronto para agendar la
-                demostraciÃ³n.
+                demostración.
               </p>
               <button
                 onClick={() => {
@@ -672,7 +673,7 @@ function FormularioContacto() {
               </button>
             </div>
           ) : (
-            /* â”€â”€ Formulario â”€â”€ */
+            /* ── Formulario ── */
             <form onSubmit={handleSubmit} className="space-y-5" noValidate>
               {/* Nombre */}
               <div>
@@ -684,16 +685,16 @@ function FormularioContacto() {
                   name="nombre"
                   value={formData.nombre}
                   onChange={handleChange}
-                  placeholder="Ej. Juan Carlos MartÃ­nez"
+                  placeholder="Ej. Juan Carlos Martínez"
                   required
                   className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#f97316] focus:border-transparent text-sm transition"
                 />
               </div>
 
-              {/* ComitÃ© */}
+              {/* Comité */}
               <div>
                 <label className="block text-[#0f3042] font-semibold text-sm mb-1.5">
-                  ComitÃ© / Junta Auxiliar{" "}
+                  Comité / Junta Auxiliar{" "}
                   <span className="text-[#f97316]">*</span>
                 </label>
                 <input
@@ -710,7 +711,7 @@ function FormularioContacto() {
               {/* Contacto */}
               <div>
                 <label className="block text-[#0f3042] font-semibold text-sm mb-1.5">
-                  TelÃ©fono o Correo electrÃ³nico{" "}
+                  Teléfono o Correo electrónico{" "}
                   <span className="text-[#f97316]">*</span>
                 </label>
                 <input
@@ -727,7 +728,7 @@ function FormularioContacto() {
               {/* Mensaje de error visible (opcional, por si quieres mostrarlo) */}
               {error && (
                 <p className="text-red-500 text-xs text-center">
-                  OcurriÃ³ un problema al enviar. Intenta de nuevo.
+                  Ocurrió un problema al enviar. Intenta de nuevo.
                 </p>
               )}
 
@@ -736,7 +737,7 @@ function FormularioContacto() {
                 disabled={cargando}
                 className="w-full bg-[#f97316] hover:bg-orange-500 active:bg-orange-600 disabled:opacity-60 text-white font-bold text-base py-4 rounded-xl shadow-md shadow-orange-200 transition-all hover:-translate-y-0.5 disabled:translate-y-0"
               >
-                {cargando ? "Enviandoâ€¦" : "Enviar Datos â†’"}
+                {cargando ? "Enviando…" : "Enviar Datos →"}
               </button>
 
               <p className="text-center text-slate-400 text-xs">
@@ -773,14 +774,14 @@ function Footer() {
           <span className="text-white font-bold text-sm">SiCoSe</span>
         </div>
         <p className="text-xs">
-          Sistema de Cobro de Servicios â€¢{" "}
+          Sistema de Cobro de Servicios •{" "}
           <span className="text-slate-400">
             Junta Auxiliar San Diego Chalma, Puebla
           </span>
         </p>
         <p className="text-xs mt-2 text-slate-600">
-          Â© {new Date().getFullYear()} â€” Bloque 1: Landing Page. VersiÃ³n de
-          validaciÃ³n.
+          © {new Date().getFullYear()} — Bloque 1: Landing Page. Versión de
+          validación.
         </p>
       </div>
     </footer>
@@ -805,4 +806,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
