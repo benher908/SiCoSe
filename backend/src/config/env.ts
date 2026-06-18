@@ -15,6 +15,9 @@ const envSchema = z.object({
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
   RATE_LIMIT_EMAIL_WINDOW_MS: z.coerce.number().int().positive().default(300000),
   RATE_LIMIT_EMAIL_MAX: z.coerce.number().int().positive().default(5),
+  SUPABASE_URL: z.string().url().optional(),
+  SUPABASE_SERVICE_KEY: z.string().optional(),
+  SUPABASE_STORAGE_BUCKET: z.string().default('comprobantes'),
 })
 
 const parsed = envSchema.safeParse(process.env)

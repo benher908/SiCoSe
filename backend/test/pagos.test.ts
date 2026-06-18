@@ -1,8 +1,13 @@
 import assert from 'node:assert/strict'
 import { before, describe, it } from 'node:test'
-import type { registerCashPayment as registerCashPaymentType } from '../src/services/pagos.js'
+import { detectReceiptFileSignature } from '../src/lib/file-signature.js'
+import type {
+  registerCashPayment as registerCashPaymentType,
+  registerTransferPayment as registerTransferPaymentType,
+} from '../src/services/pagos.js'
 
 let registerCashPayment: typeof registerCashPaymentType
+let registerTransferPayment: typeof registerTransferPaymentType
 
 before(async () => {
   process.env.DATABASE_URL ??= 'postgresql://user:pass@localhost:5432/sicose_test'
@@ -10,7 +15,7 @@ before(async () => {
   process.env.REDIS_URL ??= 'redis://localhost:6379'
   process.env.JWT_SECRET ??= 'test-secret-with-at-least-sixteen-chars'
 
-  ;({ registerCashPayment } = await import('../src/services/pagos.js'))
+  ;({ registerCashPayment, registerTransferPayment } = await import('../src/services/pagos.js'))
 })
 
 function createPaymentClient(options: { paid?: boolean; existingPaymentsTotal?: number } = {}) {
@@ -161,6 +166,42 @@ describe('registerCashPayment', () => {
       {
         name: 'Error',
         message: 'Payment amount cannot be greater than pending debt',
+        statusCode: 400,
+      },
+    )
+  })
+})
+
+describe('registerTransferPayment', () => {
+  it('rejects an executable file even when it is uploaded as a receipt', async () => {
+    const { client } = createPaymentClient()
+    const exeLikeBuffer = Buffer.from('MZ fake executable payload')
+
+    assert.equal(detectReceiptFileSignature(exeLikeBuffer), null)
+
+    await assert.rejects(
+      registerTransferPayment(
+        {
+          metodo: 'transferencia',
+          ciudadanoId: '00000000-0000-4000-8000-000000000001',
+          adeudoId: '00000000-0000-4000-8000-000000000002',
+          monto: 100,
+          referenciaBancaria: 'SPEI-123456',
+          comprobante: {
+            buffer: exeLikeBuffer,
+            originalName: 'comprobante.exe',
+          },
+          usuarioId: '00000000-0000-4000-8000-000000000005',
+          ip: '127.0.0.1',
+        },
+        client as never,
+        async () => {
+          throw new Error('storage upload should not be called')
+        },
+      ),
+      {
+        name: 'Error',
+        message: 'Receipt file must be a real jpg, png or pdf',
         statusCode: 400,
       },
     )

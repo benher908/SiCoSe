@@ -77,6 +77,59 @@
         },
         "description": "Reutiliza el mismo adeudo_id de un pago ya registrado para validar el error 409."
       }
+    },
+    {
+      "name": "Registrar pago por transferencia con comprobante",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "metodo",
+              "value": "transferencia",
+              "type": "text"
+            },
+            {
+              "key": "ciudadano_id",
+              "value": "{{ciudadano_id}}",
+              "type": "text"
+            },
+            {
+              "key": "adeudo_id",
+              "value": "{{adeudo_id}}",
+              "type": "text"
+            },
+            {
+              "key": "monto",
+              "value": "45.5",
+              "type": "text"
+            },
+            {
+              "key": "referencia_bancaria",
+              "value": "SPEI-{{referencia_bancaria}}",
+              "type": "text"
+            },
+            {
+              "key": "comprobante",
+              "type": "file",
+              "src": []
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/pagos",
+          "host": ["{{base_url}}"],
+          "path": ["api", "pagos"]
+        },
+        "description": "Registra pago por transferencia. El archivo debe ser jpg, png o pdf real y pesar maximo 5MB."
+      }
     }
   ],
   "variable": [
@@ -95,6 +148,10 @@
     {
       "key": "adeudo_id",
       "value": ""
+    },
+    {
+      "key": "referencia_bancaria",
+      "value": "123456"
     }
   ]
 }
