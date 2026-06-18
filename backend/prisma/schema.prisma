@@ -1,278 +1,132 @@
 generator client {
-<<<<<<< HEAD
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-enum UserRole {
-  admin
-  tesorero
-  secretaria
-}
-
-enum ServiceType {
-  agua
-  predial
-  cooperacion
-}
-
-enum DebtStatus {
-  pendiente
-  pagado
-  vencido
-}
-
-enum PaymentMethod {
-  efectivo
-  transferencia
-}
-
-model User {
-  id           String    @id @default(uuid())
-  nombre       String
-  email        String    @unique
-  passwordHash String    @map("password_hash")
-  rol          UserRole
-  activo       Boolean   @default(true)
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  auditorias   Audit[]
-  pagos        Payment[]
-
-  @@map("usuarios")
-}
-
-model Citizen {
-  id              String   @id @default(uuid())
-  nombreCompleto  String   @map("nombre_completo")
-  direccion       String
-  telefono        String?
-  zona            String
-  claveCatastral  String   @unique @map("clave_catastral")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-  adeudos         Debt[]
-  pagos           Payment[]
-
-  @@index([zona, nombreCompleto])
-  @@map("ciudadanos")
-}
-
-model Service {
-  id         String      @id @default(uuid())
-  nombre     String
-  descripcion String?
-  montoBase  Decimal     @map("monto_base") @db.Decimal(10, 2)
-  tipo       ServiceType
-  activo     Boolean     @default(true)
-  createdAt  DateTime    @default(now()) @map("created_at")
-  updatedAt  DateTime    @updatedAt @map("updated_at")
-  adeudos    Debt[]
-  pagos      Payment[]
-
-  @@index([tipo, activo])
-  @@map("servicios")
-}
-
-model Debt {
-  id               String      @id @default(uuid())
-  citizenId        String      @map("ciudadano_id")
-  serviceId        String      @map("servicio_id")
-  year             Int         @map("año")
-  month            Int
-  monto            Decimal     @db.Decimal(10, 2)
-  estado           DebtStatus
-  fechaVencimiento DateTime    @map("fecha_vencimiento")
-  createdAt        DateTime    @default(now()) @map("created_at")
-  updatedAt        DateTime    @updatedAt @map("updated_at")
-  citizen          Citizen     @relation(fields: [citizenId], references: [id])
-  service          Service     @relation(fields: [serviceId], references: [id])
-  payment          Payment?
-
-  @@index([citizenId, estado])
-  @@index([serviceId, year])
-  @@map("adeudos")
-}
-
-model Payment {
-  id              String        @id @default(uuid())
-  debtId          String        @unique @map("adeudo_id")
-  citizenId       String        @map("ciudadano_id")
-  serviceId       String        @map("servicio_id")
-  userId          String        @map("usuario_id")
-  folio           String        @unique
-  monto           Decimal       @db.Decimal(10, 2)
-  metodo          PaymentMethod
-  comprobanteUrl  String?       @map("comprobante_url")
-  comprobanteHash String?       @map("comprobante_hash")
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-  debt            Debt          @relation(fields: [debtId], references: [id])
-  citizen         Citizen       @relation(fields: [citizenId], references: [id])
-  service         Service       @relation(fields: [serviceId], references: [id])
-  user            User          @relation(fields: [userId], references: [id])
-
-  @@map("pagos")
-}
-
-model Audit {
-  id            String   @id @default(uuid())
-  userId        String   @map("usuario_id")
-  accion        String
-  tabla         String   @map("tabla_afectada")
-  registroId    String?  @map("registro_id")
-  ip            String?
-  userAgent     String?  @map("user_agent")
-  detalleJson   Json?    @map("detalle_json")
-  createdAt     DateTime @default(now()) @map("created_at")
-  user          User     @relation(fields: [userId], references: [id])
-
-  @@map("auditorias")
-}
-
-model Report {
-  id          String   @id @default(uuid())
-  titulo      String
-  tipo        String
-  url         String?  @map("url_descarga")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  @@map("reportes")
-}
-=======
 provider = "prisma-client-js"
 }
 
 datasource db {
-provider = "postgresql"
-url = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Usuario {
-id String @id @default(uuid())
-email String @unique
-password String
-nombre String
-rol String
-activo Boolean @default(true)
-created_at DateTime @default(now())
-updated_at DateTime @updatedAt
-auditorias Auditoria[]
+  id          String      @id @default(uuid())
+  email       String      @unique
+  passwordHash String      @map("password_hash")
+  nombre      String
+  rol         String
+  activo      Boolean     @default(true)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  auditorias  Auditoria[]
 }
 
 model Ciudadano {
-id String @id @default(uuid())
-nombre String
-apellido String
-email String @unique
-telefono String?
-direccion String?
-clave_catastral String @unique
-adeudos Adeudo[]
-pagos Pago[]
-comprobantes Comprobante[]
-reportes Reporte[]
-created_at DateTime @default(now())
-updated_at DateTime @updatedAt
+  id              String        @id @default(uuid())
+  nombre          String
+  apellido        String
+  email           String        @unique
+  telefono        String?
+  direccion       String?
+  clave_catastral String        @unique
+  adeudos         Adeudo[]
+  pagos           Pago[]
+  comprobantes    Comprobante[]
+  reportes        Reporte[]
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
 
-@@index([email])
-@@index([clave_catastral])
+  @@index([email])
+  @@index([clave_catastral])
 }
 
 model Servicio {
-id String @id @default(uuid())
-nombre String
-descripcion String?
-tarifa Float
-adeudos Adeudo[]
-created_at DateTime @default(now())
-updated_at DateTime @updatedAt
+  id          String   @id @default(uuid())
+  nombre      String
+  descripcion String?
+  tarifa      Float
+  adeudos     Adeudo[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
 
 model Adeudo {
-id String @id @default(uuid())
-ciudadano Ciudadano @relation(fields: [ciudadanoId], references: [id])
-ciudadanoId String
-servicio Servicio @relation(fields: [servicioId], references: [id])
-servicioId String
-monto Float
-periodo String
-vencimiento DateTime
-pagado Boolean @default(false)
-pagos Pago[]
-comprobantes Comprobante[]
-created_at DateTime @default(now())
-updated_at DateTime @updatedAt
+  id           String        @id @default(uuid())
+  ciudadano    Ciudadano     @relation(fields: [ciudadanoId], references: [id])
+  ciudadanoId  String
+  servicio     Servicio      @relation(fields: [servicioId], references: [id])
+  servicioId   String
+  monto        Float
+  periodo      String
+  vencimiento  DateTime
+  pagado       Boolean       @default(false)
+  pagos        Pago[]
+  comprobantes Comprobante[]
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
 
-@@index([ciudadanoId])
-@@index([servicioId])
+  @@index([ciudadanoId])
+  @@index([servicioId])
 }
 
 model Pago {
-id String @id @default(uuid())
-ciudadano Ciudadano @relation(fields: [ciudadanoId], references: [id])
-ciudadanoId String
-adeudo Adeudo @relation(fields: [adeudoId], references: [id])
-adeudoId String
-monto Float
-fecha DateTime @default(now())
-metodo String
-recibo String?
-creado_por String?
-created_at DateTime @default(now())
-updated_at DateTime @updatedAt
+  id          String    @id @default(uuid())
+  ciudadano   Ciudadano @relation(fields: [ciudadanoId], references: [id])
+  ciudadanoId String
+  adeudo      Adeudo    @relation(fields: [adeudoId], references: [id])
+  adeudoId    String
+  monto       Float
+  fecha       DateTime  @default(now())
+  metodo      String
+  recibo      String?
+  creado_por  String?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
 
-@@index([ciudadanoId])
-@@index([adeudoId])
+  @@index([ciudadanoId])
+  @@index([adeudoId])
 }
 
 model Comprobante {
-id String @id @default(uuid())
-ciudadano Ciudadano @relation(fields: [ciudadanoId], references: [id])
-ciudadanoId String
-adeudo Adeudo @relation(fields: [adeudoId], references: [id])
-adeudoId String
-tipo String
-url String
-fecha DateTime @default(now())
-created_at DateTime @default(now())
-updated_at DateTime @updatedAt
+  id          String    @id @default(uuid())
+  ciudadano   Ciudadano @relation(fields: [ciudadanoId], references: [id])
+  ciudadanoId String
+  adeudo      Adeudo    @relation(fields: [adeudoId], references: [id])
+  adeudoId    String
+  tipo        String
+  url         String
+  fecha       DateTime  @default(now())
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
 
-@@index([ciudadanoId])
-@@index([adeudoId])
+  @@index([ciudadanoId])
+  @@index([adeudoId])
 }
 
 model Auditoria {
-id String @id @default(uuid())
-usuario Usuario @relation(fields: [usuarioId], references: [id])
-usuarioId String
-accion String
-entidad String
-entidad_id String
-detalles String?
-created_at DateTime @default(now())
-updated_at DateTime @updatedAt
+  id          String   @id @default(uuid())
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId   String
+  accion      String
+  entidad     String
+  entidad_id  String
+  detalles    String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 
-@@index([usuarioId])
+  @@index([usuarioId])
 }
 
 model Reporte {
-id String @id @default(uuid())
-ciudadano Ciudadano @relation(fields: [ciudadanoId], references: [id])
-ciudadanoId String
-titulo String
-descripcion String?
-tipo String
-estado String @default("PENDIENTE")
-fecha DateTime @default(now())
-created_at DateTime @default(now())
-updated_at DateTime @updatedAt
+  id          String    @id @default(uuid())
+  ciudadano   Ciudadano @relation(fields: [ciudadanoId], references: [id])
+  ciudadanoId String
+  titulo      String
+  descripcion String?
+  tipo        String
+  estado      String    @default("PENDIENTE")
+  fecha       DateTime  @default(now())
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
 
-@@index([ciudadanoId])
+  @@index([ciudadanoId])
 }
->>>>>>> origin/develop

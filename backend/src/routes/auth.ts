@@ -1,13 +1,23 @@
+import bcrypt from 'bcrypt'
 import { Router } from 'express'
-import { randomUUID } from 'node:crypto'
 import { z } from 'zod'
-import { rateLimit } from '../middleware/rate-limit.js'
+import { prisma } from '../lib/prisma.js'
 import { signAuthToken, verifyAuthToken } from '../lib/jwt.js'
+import { blacklistToken, isTokenBlacklisted } from '../lib/token-blacklist.js'
+import { rateLimit } from '../middleware/rate-limit.js'
 
 const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(4),
+  password: z.string().min(8),
 })
+
+function getBearerToken(header: string | undefined) {
+  if (!header?.startsWith('Bearer ')) {
+    return ''
+  }
+
+  return header.slice('Bearer '.length).trim()
+}
 
 export const authRouter = Router()
 
@@ -22,11 +32,25 @@ authRouter.post('/login', rateLimit, async (request, response, next) => {
       })
     }
 
-    const role = parsed.data.email.includes('admin') ? 'admin' : 'tesorero'
+    const user = await prisma.usuario.findUnique({
+      where: { email: parsed.data.email },
+    })
+
+    const passwordHash = user?.passwordHash ?? ''
+    const validPassword =
+      Boolean(user?.activo) && (await bcrypt.compare(parsed.data.password, passwordHash))
+
+    if (!user || !validPassword) {
+      return response.status(401).json({
+        error: 'Invalid email or password',
+        code: 401,
+      })
+    }
+
     const token = await signAuthToken({
-      sub: randomUUID(),
-      email: parsed.data.email,
-      rol: role,
+      sub: user.id,
+      email: user.email,
+      rol: user.rol,
     })
 
     return response.json({
@@ -34,8 +58,10 @@ authRouter.post('/login', rateLimit, async (request, response, next) => {
       data: {
         token,
         user: {
-          email: parsed.data.email,
-          rol: role,
+          id: user.id,
+          email: user.email,
+          nombre: user.nombre,
+          rol: user.rol,
         },
       },
     })
@@ -45,8 +71,58 @@ authRouter.post('/login', rateLimit, async (request, response, next) => {
 })
 
 authRouter.get('/me', async (request, response) => {
-  const header = request.headers.authorization ?? ''
-  const token = header.startsWith('Bearer ') ? header.slice(7) : ''
+  const token = getBearerToken(request.headers.authorization)
+
+  if (!token) {
+    return response.status(401).json({
+      error: 'Missing bearer token',
+      code: 401,
+    })
+  }
+
+  if (await isTokenBlacklisted(token)) {
+    return response.status(401).json({
+      error: 'Invalid or expired token',
+      code: 401,
+    })
+  }
+
+  try {
+    const payload = await verifyAuthToken(token)
+    const user = await prisma.usuario.findFirst({
+      where: {
+        id: payload.sub,
+        activo: true,
+      },
+      select: {
+        id: true,
+        email: true,
+        nombre: true,
+        rol: true,
+        activo: true,
+      },
+    })
+
+    if (!user) {
+      return response.status(401).json({
+        error: 'Invalid or expired token',
+        code: 401,
+      })
+    }
+
+    return response.json({
+      data: user,
+    })
+  } catch {
+    return response.status(401).json({
+      error: 'Invalid or expired token',
+      code: 401,
+    })
+  }
+})
+
+authRouter.post('/logout', async (request, response) => {
+  const token = getBearerToken(request.headers.authorization)
 
   if (!token) {
     return response.status(401).json({
@@ -57,8 +133,10 @@ authRouter.get('/me', async (request, response) => {
 
   try {
     const payload = await verifyAuthToken(token)
+    await blacklistToken(token, payload.exp)
+
     return response.json({
-      data: payload,
+      message: 'Logout successful',
     })
   } catch {
     return response.status(401).json({
@@ -66,10 +144,4 @@ authRouter.get('/me', async (request, response) => {
       code: 401,
     })
   }
-})
-
-authRouter.post('/logout', (_request, response) => {
-  response.json({
-    message: 'Token revoked in demo mode',
-  })
 })
