@@ -3,6 +3,7 @@ import { cn } from '../lib/utils'
 const ROUTES = [
   { href: '/', label: 'Inicio' },
   { href: '/login', label: 'Login' },
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '/ciudadanos', label: 'Ciudadanos' },
 ] as const
 
@@ -19,7 +20,9 @@ function getCurrentPath() {
 
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
 
-  return pathname === '/login' || pathname === '/ciudadanos' ? pathname : '/'
+  return pathname === '/login' || pathname === '/ciudadanos' || pathname === '/dashboard'
+    ? pathname
+    : '/'
 }
 
 const VARIANT_CLASSES = {
