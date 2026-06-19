@@ -2,11 +2,13 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY backend/package*.json ./
 RUN npm install
 
-COPY . .
+COPY backend/ .
 
-EXPOSE 5173
+RUN npm run prisma:generate && npm run build
 
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+EXPOSE 3000
+
+CMD ["sh", "-c", "npm run prisma:migrate:deploy && npm start"]
