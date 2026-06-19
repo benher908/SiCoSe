@@ -1,6 +1,7 @@
 import LandingPage from './LandingPage.jsx'
 import LoginPage from './pages/auth/LoginPage'
 import CitizenManagementPage from './pages/citizens/CitizenManagementPage'
+import DashboardPage from './pages/dashboard/DashboardPage'
 
 export default function App() {
   const pathname =
@@ -14,6 +15,10 @@ export default function App() {
 
   if (pathname === '/ciudadanos') {
     return <CitizenManagementPage />
+  }
+
+  if (pathname === '/dashboard') {
+    return <DashboardPage />
   }
 
   return <LandingPage />
